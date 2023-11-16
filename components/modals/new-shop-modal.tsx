@@ -35,7 +35,7 @@ const NewShopModal: React.FC<NewShopModalProps> = ({ children }) => {
     }).then((shop) => router.push(`/${params.userId}/${shop}`));
     console.log(promise);
     toast.promise(promise, {
-      success: "Shop created!",
+      success: "Shop created! Continue setting up your shop.",
       loading: "Creating shop...",
       error: "Error creating shop",
     });

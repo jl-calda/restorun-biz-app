@@ -29,3 +29,10 @@ export default function RootLayout({
     </html>
   );
 }
+// # Deployment used by `npx convex dev`
+// CONVEX_DEPLOYMENT=dev:proficient-condor-901 # team: jl-calda, project: restorun-biz-app
+
+// NEXT_PUBLIC_CONVEX_URL="https://proficient-condor-901.convex.cloud"
+
+// NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_d2VhbHRoeS1rb2FsYS02NS5jbGVyay5hY2NvdW50cy5kZXYk
+// CLERK_SECRET_KEY=sk_test_QJP21FAVHMlHq4xdREGZbuesFd2Z2jtAzmWWXI91ZG

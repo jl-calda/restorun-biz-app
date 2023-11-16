@@ -1,4 +1,5 @@
 "use client";
+import { useUser } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 import { redirect } from "next/navigation";
 import React from "react";
