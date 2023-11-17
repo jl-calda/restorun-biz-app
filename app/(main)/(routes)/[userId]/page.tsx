@@ -1,15 +1,16 @@
 import NewShopModal from "@/components/modals/new-shop-modal";
 import { Button } from "@/components/ui/button";
-import Dashboard from "../_components/dashboard";
+import { ShopsDashboard } from "./_components/shops-dashboard";
 
 const UserPage = () => {
   return (
-    <div>
-      <Dashboard />
-      <NewShopModal>
+    <main className="h-full">
+      <ShopsDashboard />
+
+      {/* <NewShopModal>
         <Button>Open a shop</Button>
-      </NewShopModal>
-    </div>
+      </NewShopModal> */}
+    </main>
   );
 };
 
