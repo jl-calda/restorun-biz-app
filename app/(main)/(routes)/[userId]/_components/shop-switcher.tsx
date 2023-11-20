@@ -12,7 +12,7 @@ import { Doc, Id } from "@/convex/_generated/dataModel";
 
 import { useQuery } from "convex/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 
 import {
   Command,
@@ -27,40 +27,27 @@ import { Check, PlusCircle, Store } from "lucide-react";
 import NewShopModal from "@/components/modals/new-shop-modal";
 import { toast } from "sonner";
 
-interface ShopSwitcherProps {
-  shops: Doc<"shops">[] | undefined;
-}
-
-export const ShopSwitcher = ({ shops }: ShopSwitcherProps) => {
+export const ShopSwitcher = () => {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const shops = useQuery(api.shops.getByUserId, {
+    userId: params.userId as Id<"shops">,
+  });
   const [selectedShop, setSelectedShop] = useState<Doc<"shops"> | undefined>(
     undefined
   );
-  const [filteredShops, setFilteredShops] = useState<
-    Doc<"shops">[] | undefined
-  >(shops);
 
   useEffect(() => {
-    setFilteredShops(shops);
-    const shopId = searchParams.get("shop");
-    if (shopId) {
-      const shop = shops?.find((shop) => shop._id === shopId);
-      if (shop) {
-        setSelectedShop(shop);
-      } else {
-        toast.error("Shop not found");
-      }
-    } else {
-      setSelectedShop(shops?.[0]);
+    if (shops) {
+      const shop = shops.find((shop) => shop._id === searchParams.get("shop"));
+      setSelectedShop(shop);
     }
-  }, [shops, searchParams]);
+  }, [shops]);
 
   const onSelect = (value: string | Id<"shops">) => {
     const queryString = new URLSearchParams(searchParams);
-    queryString.set("shop", value);
+    queryString.set("shopId", value);
     router.push(`/${params.userId}?${queryString.toString()}`);
   };
   return (
@@ -89,13 +76,11 @@ export const ShopSwitcher = ({ shops }: ShopSwitcherProps) => {
           />
           <CommandSeparator />
           <CommandGroup
-            heading={
-              filteredShops === undefined ? "No shops found" : "Current shops"
-            }
+            heading={shops === undefined ? "No shops found" : "Current shops"}
           >
             <CommandList>
               <>
-                {filteredShops?.map((shop) => (
+                {shops?.map((shop) => (
                   <CommandItem
                     value={shop._id}
                     onSelect={onSelect}

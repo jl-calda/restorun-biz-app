@@ -44,18 +44,18 @@ export const getByUserId = query({
 
 export const getFirstByUserId = query({
   args: {
-    userId: v.string(),
+    userId: v.optional(v.string() || v.null()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) throw new Error("Unauthorized");
 
-    const userId = identity.subject;
-
     const shops = await ctx.db
       .query("shops")
-      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .withIndex("by_user", (q) =>
+        q.eq("userId", args.userId ? args.userId : "")
+      )
       .order("desc")
       .first();
     return shops;
